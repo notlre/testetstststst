@@ -271,27 +271,16 @@
         }
 
         .timeline-item {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            margin-bottom: 8rem;
+            background: white;
+            border-radius: 24px;
+            padding: 3rem;
+            box-shadow: 
+                0 5px 15px rgba(0, 0, 0, 0.05),
+                0 15px 35px rgba(212, 66, 107, 0.1);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
-        }
-
-        .timeline-item:nth-child(odd) .timeline-content {
-            order: 1;
-        }
-
-        .timeline-item:nth-child(odd) .timeline-image {
-            order: 2;
-        }
-
-        .timeline-item:nth-child(even) .timeline-content {
-            order: 2;
-        }
-
-        .timeline-item:nth-child(even) .timeline-image {
-            order: 1;
+            overflow: hidden;
+            margin-bottom: 3rem;
         }
 
         .timeline-content {
@@ -347,95 +336,354 @@
             font-size: 1.05rem;
         }
 
-        /* Photo Gallery Card */
-        .timeline-image {
-            position: relative;
-            border-radius: 24px;
-            overflow: hidden;
-            height: 500px;
+        /* Photo Album Section */
+        .album-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 6rem 2rem 4rem;
+            text-align: center;
+        }
+
+        .album-trigger {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
             cursor: pointer;
-            box-shadow: 
-                0 10px 30px rgba(0, 0, 0, 0.1),
-                0 20px 60px rgba(212, 66, 107, 0.1);
+            padding: 4rem 5rem;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px) saturate(180%);
+            border-radius: 30px;
+            border: 3px dashed var(--rose-quartz);
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .timeline-image:hover {
-            transform: scale(1.05) rotate(2deg);
             box-shadow: 
-                0 15px 40px rgba(0, 0, 0, 0.15),
-                0 30px 80px rgba(212, 66, 107, 0.15);
+                0 10px 30px rgba(212, 66, 107, 0.1),
+                0 20px 60px rgba(212, 66, 107, 0.05);
+            position: relative;
+            overflow: hidden;
         }
 
-        .image-wrapper {
-            width: 100%;
-            height: 100%;
+        .album-trigger::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--deep-rose), var(--wine));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .album-trigger:hover::before {
+            opacity: 1;
+        }
+
+        .album-trigger:hover {
+            border-color: var(--deep-rose);
+            border-style: solid;
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 
+                0 20px 50px rgba(212, 66, 107, 0.2),
+                0 30px 80px rgba(212, 66, 107, 0.1);
+        }
+
+        .album-trigger.opened {
+            border-style: solid;
+            border-color: var(--wine);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .album-icon {
+            font-size: 6rem;
+            animation: float 3s ease-in-out infinite;
+            filter: drop-shadow(0 5px 15px rgba(212, 66, 107, 0.3));
+            transition: transform 0.5s ease;
+        }
+
+        .album-trigger.opened .album-icon {
+            transform: scale(0.8);
+        }
+
+        .album-title {
+            font-family: 'Cormorant', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            color: var(--deep-rose);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .album-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            font-style: italic;
+        }
+
+        .album-count {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.5rem 1.5rem;
+            background: var(--rose-quartz);
+            border-radius: 20px;
+            color: var(--wine);
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        /* Photo Gallery */
+        .photo-gallery {
+            max-width: 1200px;
+            margin: 4rem auto 0;
+            padding: 0 2rem;
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .photo-gallery.open {
+            opacity: 1;
+            max-height: 20000px;
+        }
+
+        .gallery-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .gallery-title {
+            font-family: 'Cormorant', serif;
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            color: var(--deep-rose);
+            margin-bottom: 1rem;
+        }
+
+        .gallery-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            font-style: italic;
+        }
+
+        .gallery-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 4rem;
+        }
+
+        .gallery-item {
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            gap: 3rem;
+            align-items: center;
+            background: white;
+            padding: 2.5rem;
+            border-radius: 24px;
+            box-shadow: 0 5px 15px rgba(212, 66, 107, 0.08);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0;
+            transform: translateY(30px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gallery-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--deep-rose), var(--wine));
+        }
+
+        .gallery-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 
+                0 15px 35px rgba(212, 66, 107, 0.12),
+                0 25px 60px rgba(212, 66, 107, 0.08);
+        }
+
+        .gallery-item:nth-child(even) {
+            grid-template-columns: 1fr 400px;
+        }
+
+        .gallery-item:nth-child(even) .photo-box {
+            order: 2;
+        }
+
+        .gallery-item:nth-child(even) .photo-description {
+            order: 1;
+            text-align: right;
+        }
+
+        .photo-box {
+            width: 400px;
+            height: 400px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 
+                0 10px 30px rgba(0, 0, 0, 0.08),
+                0 15px 50px rgba(212, 66, 107, 0.1);
             background: linear-gradient(135deg, var(--blush), var(--seashell));
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
-            overflow: hidden;
+            transition: transform 0.5s ease;
         }
 
-        .image-placeholder {
+        .gallery-item:hover .photo-box {
+            transform: scale(1.02);
+        }
+
+        .photo-placeholder {
             text-align: center;
-            z-index: 2;
-            position: relative;
+            color: var(--text-light);
+            padding: 2rem;
         }
 
-        .placeholder-icon {
-            font-size: 5rem;
-            margin-bottom: 1rem;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        .placeholder-text {
+        .photo-number {
+            font-size: 4rem;
             font-family: 'Cormorant', serif;
-            font-size: 1.5rem;
             color: var(--deep-rose);
             margin-bottom: 1rem;
+            font-weight: 600;
         }
 
-        .click-hint {
-            display: inline-block;
-            padding: 0.8rem 1.5rem;
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            border-radius: 30px;
-            font-size: 0.9rem;
-            color: var(--wine);
-            border: 2px dashed var(--rose-quartz);
-            transition: all 0.3s ease;
+        .photo-placeholder-text {
+            font-size: 1rem;
+            color: var(--text-light);
         }
 
-        .image-wrapper:hover .click-hint {
-            border-color: var(--deep-rose);
-            border-style: solid;
-            background: white;
-            transform: scale(1.05);
-        }
-
-        .actual-photo {
-            position: absolute;
-            top: 0;
-            left: 0;
+        .actual-image {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            opacity: 0;
-            transform: scale(0.9);
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.5s ease;
         }
 
-        .actual-photo.revealed {
-            opacity: 1;
-            transform: scale(1);
+        .gallery-item:hover .actual-image {
+            transform: scale(1.05);
         }
 
-        .image-placeholder.hidden {
-            opacity: 0;
-            transform: scale(0.8);
+        .photo-description {
+            padding: 2rem;
+        }
+
+        .photo-desc-title {
+            font-family: 'Cormorant', serif;
+            font-size: 1.8rem;
+            color: var(--deep-rose);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .photo-desc-text {
+            line-height: 1.8;
+            color: var(--text-dark);
+            font-size: 1.05rem;
+            margin-bottom: 1rem;
+        }
+
+        .photo-desc-date {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            font-style: italic;
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            background: var(--blush);
+            border-radius: 15px;
+        }
+
+        /* Footer */
+        .footer {
+            background: linear-gradient(135deg, rgba(247, 202, 208, 0.5), rgba(250, 225, 221, 0.5));
+            backdrop-filter: blur(10px);
+            padding: 5rem 2rem 3rem;
+            margin-top: 8rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, var(--deep-rose), var(--wine), var(--deep-rose), transparent);
+        }
+
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .footer-hearts {
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+
+        .footer-hearts span {
+            animation: heartbeat 1.5s infinite;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .footer-hearts span:hover {
+            transform: scale(1.3);
+        }
+
+        .footer-hearts span:nth-child(2) {
+            animation-delay: 0.3s;
+        }
+
+        .footer-hearts span:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+
+        .footer-message {
+            font-family: 'Cormorant', serif;
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            color: var(--wine);
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        .footer-submessage {
+            font-size: 1.1rem;
+            color: var(--text-dark);
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .footer-signature {
+            font-family: 'Cormorant', serif;
+            font-size: 1.8rem;
+            color: var(--deep-rose);
+            font-style: italic;
+            margin: 3rem 0 1rem;
+        }
+
+        .footer-date {
+            font-size: 0.95rem;
+            color: var(--text-light);
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(212, 66, 107, 0.2);
         }
 
         /* Floating Music Button */
@@ -494,19 +742,36 @@
                 margin-bottom: 4rem;
             }
 
-            .timeline-item:nth-child(odd) .timeline-content,
-            .timeline-item:nth-child(even) .timeline-content,
-            .timeline-item:nth-child(odd) .timeline-image,
-            .timeline-item:nth-child(even) .timeline-image {
-                order: initial;
-            }
-
             .greeting-card {
                 padding: 3rem 2rem;
             }
 
-            .timeline-image {
+            .gallery-item {
+                grid-template-columns: 1fr !important;
+                gap: 2rem;
+                padding: 2rem;
+            }
+
+            .gallery-item:nth-child(even) .photo-box,
+            .gallery-item:nth-child(even) .photo-description {
+                order: initial;
+            }
+
+            .gallery-item:nth-child(even) .photo-description {
+                text-align: left;
+            }
+
+            .photo-box {
+                width: 100%;
                 height: 350px;
+            }
+
+            .album-trigger {
+                padding: 3rem 2rem;
+            }
+
+            .album-icon {
+                font-size: 5rem;
             }
 
             body {
@@ -630,6 +895,8 @@
                     
                     <HeroSection />
                     <TimelineSection />
+                    <AlbumSection />
+                    <Footer />
                     
                     <div 
                         className={`music-fab ${musicPlaying ? 'playing' : ''}`}
@@ -749,8 +1016,6 @@
 
         // Memory Item Component
         function MemoryItem({ memory, index }) {
-            const [revealed, setRevealed] = useState(false);
-
             return (
                 <div className="timeline-item reveal">
                     <div className="timeline-content">
@@ -760,27 +1025,148 @@
                         </div>
                         <p className="content-text">{memory.text}</p>
                     </div>
+                </div>
+            );
+        }
 
-                    <div className="timeline-image" onClick={() => setRevealed(!revealed)}>
-                        <div className="image-wrapper">
-                            <div className={`image-placeholder ${revealed ? 'hidden' : ''}`}>
-                                <div className="placeholder-icon">{memory.icon}</div>
-                                <div className="placeholder-text">Our Memory</div>
-                                <div className="click-hint">Click to reveal</div>
-                            </div>
-                            <img 
-                                className={`actual-photo ${revealed ? 'revealed' : ''}`}
-                                src={`https://images.unsplash.com/photo-${
-                                    index === 0 ? '1522673607200-164d1b6ce486' :
-                                    index === 1 ? '1516589178581-6cd7833ae3b2' :
-                                    index === 2 ? '1502003148287-a82ef80a6abc' :
-                                    '1522771739844-6a9f6d5f14af'
-                                }?w=800&q=80`}
-                                alt="Memory"
-                            />
+        // Album Section Component
+        function AlbumSection() {
+            const [isOpen, setIsOpen] = useState(false);
+
+            const photos = [
+                { 
+                    title: "Our First Moment", 
+                    description: "The very first photo we took together. I remember how nervous I was, but your smile made everything perfect.",
+                    date: "Month 1"
+                },
+                { 
+                    title: "Coffee Date", 
+                    description: "Our favorite café where we spent hours talking about everything and nothing. Best coffee dates ever!",
+                    date: "Month 2"
+                },
+                { 
+                    title: "Adventure Time", 
+                    description: "When we explored new places together. Every adventure with you is my favorite memory.",
+                    date: "Month 3"
+                },
+                { 
+                    title: "Silly Moments", 
+                    description: "Those random moments where we couldn't stop laughing. You make every day fun!",
+                    date: "Month 4"
+                },
+                { 
+                    title: "Sunset Together", 
+                    description: "Watching the sunset with you. Beautiful view, but I was looking at you most of the time.",
+                    date: "Month 5"
+                },
+                { 
+                    title: "Food Adventures", 
+                    description: "Trying new restaurants and rating food together. Every meal is special with you!",
+                    date: "Month 6"
+                },
+                { 
+                    title: "Cozy Days", 
+                    description: "Those quiet days just being together. Sometimes the simple moments are the best.",
+                    date: "Month 7"
+                },
+                { 
+                    title: "Celebrations", 
+                    description: "Celebrating milestones and special days. Every moment with you is worth celebrating!",
+                    date: "Month 8"
+                },
+                { 
+                    title: "Random Days", 
+                    description: "Just another day made special because I'm with you. These are my favorite kind of days.",
+                    date: "Month 9"
+                },
+                { 
+                    title: "Our Journey", 
+                    description: "Looking back at all we've been through together. Can't wait for all the memories we'll create!",
+                    date: "Today"
+                }
+            ];
+
+            useEffect(() => {
+                if (isOpen) {
+                    setTimeout(() => {
+                        const items = document.querySelectorAll('.gallery-item');
+                        items.forEach((item, index) => {
+                            setTimeout(() => {
+                                item.classList.add('visible');
+                            }, index * 150);
+                        });
+                    }, 300);
+                }
+            }, [isOpen]);
+
+            return (
+                <section className="album-section reveal">
+                    <div 
+                        className={`album-trigger ${isOpen ? 'opened' : ''}`}
+                        onClick={() => setIsOpen(!isOpen)}
+                    >
+                        <div className="album-icon">📸</div>
+                        <h2 className="album-title">Our Photo Album</h2>
+                        <p className="album-subtitle">
+                            {isOpen ? 'Click to close' : 'Click to open our memories'}
+                        </p>
+                        <span className="album-count">10 Special Moments</span>
+                    </div>
+
+                    <div className={`photo-gallery ${isOpen ? 'open' : ''}`}>
+                        <div className="gallery-header">
+                            <h3 className="gallery-title">Our Beautiful Memories</h3>
+                            <p className="gallery-subtitle">Every moment with you is a treasure ♡</p>
+                        </div>
+                        <div className="gallery-grid">
+                            {photos.map((photo, index) => (
+                                <div key={index} className="gallery-item">
+                                    <div className="photo-box">
+                                        <div className="photo-placeholder">
+                                            <div className="photo-number">#{index + 1}</div>
+                                            <div className="photo-placeholder-text">Photo {index + 1}</div>
+                                        </div>
+                                        {/* Replace with actual image */}
+                                        {/* <img className="actual-image" src={`photos/photo-${index + 1}.jpg`} alt={photo.title} /> */}
+                                    </div>
+                                    <div className="photo-description">
+                                        <h4 className="photo-desc-title">{photo.title}</h4>
+                                        <p className="photo-desc-text">{photo.description}</p>
+                                        <span className="photo-desc-date">{photo.date}</span>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
                     </div>
-                </div>
+                </section>
+            );
+        }
+
+        // Footer Component
+        function Footer() {
+            return (
+                <footer className="footer">
+                    <div className="footer-content">
+                        <div className="footer-hearts">
+                            <span>💕</span>
+                            <span>💖</span>
+                            <span>💕</span>
+                        </div>
+                        <p className="footer-message">
+                            Made with endless love for the most amazing girl
+                        </p>
+                        <p className="footer-submessage">
+                            Thank you for being you, for every smile, every laugh, every moment. 
+                            You make my world brighter every single day. I love you more than words can say.
+                        </p>
+                        <p className="footer-signature">
+                            Forever yours ♡
+                        </p>
+                        <p className="footer-date">
+                            February 14, 2026 • Happy Hearts Day & 1st Monthsary
+                        </p>
+                    </div>
+                </footer>
             );
         }
 
